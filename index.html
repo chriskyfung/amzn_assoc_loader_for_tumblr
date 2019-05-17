@@ -56,11 +56,14 @@ function convertAdCode(){
 
 <input id="loadbutton" type="button" onclick="loadAmazonAds()" value="Load the Ads" style="display:none;"/>
 
+<div id="wrapper"></div>
+
 <script>   
 /* Load Amazon Ads Widget */
-	function loadAmazonAds(){
+    function loadAmazonAds(){
       var outputarea = document.getElementById("html-ad-code");
-      document.body.innerHTML += outputarea.value;
+      var wrapper = document.getElementById("wrapper");
+      wrapper.innerHTML = outputarea.value;
       var s2 = '<script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"><\/script>';
 
       var x = document.getElementsByClassName('amznads');
@@ -73,7 +76,7 @@ function convertAdCode(){
       }
     }
 
-	function MoveDiv() {
+    function MoveDiv() {
         var fragment = document.createDocumentFragment();
         fragment.appendChild(document.getElementById('amznad0_0'));
             document.getElementById('amznad1_0').appendChild(fragment);
