@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+a <div class="amznads" data-amznads='amzn_assoc_placement = "adunit0"; amzn_assoc_search_bar = "false"; amzn_assoc_tracking_id = "<your-tracking-id>"; amzn_assoc_ad_mode = "manual"; amzn_assoc_ad_type = "smart"; amzn_assoc_marketplace = "amazon"; amzn_assoc_region = "US"; amzn_assoc_title = "Hans Selye Picks"; amzn_assoc_linkid = "<amzn_assoc_linkid>"; amzn_assoc_asins = "B00IHGCNUO,B00IHGCONU,0805073698,0070562121";'>b</div> c 
+
+    <input type="button" onclick="MoveDiv()" value="Click Me" />
+
+
+<script>   
+ //  var s1= '<script type="text/javascript"> amzn_assoc_placement = "adunit0"; amzn_assoc_search_bar = "true"; amzn_assoc_tracking_id = "<your-tracking-id>"; amzn_assoc_ad_mode = "manual"; amzn_assoc_ad_type = "smart"; amzn_assoc_marketplace = "amazon"; amzn_assoc_region = "US"; amzn_assoc_title = "About Hans Selye"; amzn_assoc_linkid = "<amzn_assoc_linkid>"; amzn_assoc_asins = "B00IHGCNUO,B00IHGCONU,0805073698,0070562121"; <\/script>';
+
+   
+    var s2 = '<script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"><\/script>';
+   
+    var x = document.getElementsByClassName('amznads');
+    var i;
+    for (i = 0; i < x.length; i++)  {
+      var data = x[i].getAttribute("data-amznads");
+      var s1 = '<script type="text/javascript"> ' + data + '<\/script>';
+      x[i].setAttribute('id', 'amznad1_' + i);
+      document.write('<div id="amznad0_' + i + '">' + s1 + s2 + '</div>'); 
+    }
+    </script>
+    <script defer onload="MoveDiv()">
+function MoveDiv() {
+	var fragment = document.createDocumentFragment();
+	fragment.appendChild(document.getElementById('amznad0_0'));
+	document.getElementById('amznad1_0').appendChild(fragment);
+}
+</script>
+
+
+
+</body>
+</html>
