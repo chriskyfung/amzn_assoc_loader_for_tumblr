@@ -1,0 +1,25 @@
+<div id="amzntrigger" style="display: block; visibility: visible;">
+  <script>
+    document.getElementById('amzntrigger').parentElement.removeAttribute('style');
+    function amznadsTrigger(){
+
+      var x = document.getElementsByClassName('amznads');
+      for (var i = 0; i < x.length; i++) {
+        var data = x[i].getAttribute('data-amznads');
+        var script_textjs = document.createElement("script");
+        script_textjs.type = 'text/javascript';
+        script_textjs.innerHTML = data;
+        x[i].setAttribute('id', 'amznad1_' + i);
+        var amznad_div = document.createElement('div');
+        amznad_div.id = 'amznad0_' + i;
+        amznad_div.appendChild(script_textjs);
+        document.appendChild(amznad_div)
+      }
+      var script = document.createElement('script');
+      script.src = '//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US';
+      document.appendChild(script);
+
+    }
+    amznadsTrigger();
+  </script>
+</div>

@@ -1,0 +1,201 @@
+---
+layout: page
+date: 2019-10-23 02:40 +0800
+title: "Amazon Associates Ads Loader for Tumblr"
+css:
+  custom: >-
+    textarea { 
+      border-width: 0px;
+      box-shadow: none;
+      display: inline-block;
+      font: 400 13.3333px Arial;
+      line-height: 19px;
+      outline: 0;
+      overflow-y: hidden;
+      padding: 5px;
+      resize: none;
+      width: 100%;
+      height: 257px;
+    }
+    .a-button {
+      background: #f0c14b;
+      border-color: #a88734 #9c7e31 #846a29;
+      border-radius: 3px;
+      border-style: solid;
+      border-width: 1px;
+      color: #111;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 13px;
+      line-height: 29px;
+      margin: 1em;
+      outline: 0;
+      overflow: hidden;
+      padding: 0 10px 0 11px;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .ac-ads-adcode-copy-container {
+      border: 1px solid #b8b8b8;
+      box-shadow: inset 0 0 2px #ccc;
+      width: 100%;
+      min-height: 100px;
+      overflow: auto;
+      padding: 5px;
+      word-wrap: break-word;
+      border-radius: 3px;
+    }
+    .ac-ads-adcode-item-title {
+      color: #C45500;
+      font-family: "Amazon Ember",Arial,sans-serif;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+---
+
+{%- comment -%}
+Convert the following JavaScript code to a HTML code, for example:
+
+```html
+<script type="text/javascript">
+  amzn_assoc_placement = "adunit0";
+  amzn_assoc_search_bar = "true";
+  amzn_assoc_tracking_id = "cfky05-20";
+  amzn_assoc_ad_mode = "manual";
+  amzn_assoc_ad_type = "smart";
+  amzn_assoc_marketplace = "amazon";
+  amzn_assoc_region = "US";
+  amzn_assoc_title = "About Hans Selye";
+  amzn_assoc_linkid = "a79c4f73a9592cb7ac406607107a58f7";
+  amzn_assoc_asins = "B00IHGCNUO,B00IHGCONU,0805073698,0070562121";
+</script>
+<script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script>
+```
+
+**Result:**
+
+```html
+<div class="amznads" data-amznads='amzn_assoc_placement = "adunit0"; amzn_assoc_search_bar = "false"; amzn_assoc_tracking_id = "cfky05-20"; amzn_assoc_ad_mode = "manual"; amzn_assoc_ad_type = "smart"; amzn_assoc_marketplace = "amazon"; amzn_assoc_region = "US"; amzn_assoc_title = "Hans Selye Picks"; amzn_assoc_linkid = "0816b1d20c9c0a26f0f1f662e8a9228f"; amzn_assoc_asins = "B00IHGCNUO,B00IHGCONU,0805073698,0070562121";'></div>
+```
+{%- endcomment -%}
+
+A tool to convert the Amazon Associate JavaScript Ads code to a HTML format.
+
+### Introduction
+
+Tumblr disabled the JavaScript directly embedded in a post. For that reason, Amazon Ads will not display if we just copy and paste the to the an ads code to a Tumblr post. To work around, we created a code to interpret a HTML tag that contains the ads data and insert the ads back to the post body.
+
+### Online Amazon-Ad-Code-to-HTML-data-Attributes Converter
+
+<label class="ac-ads-adcode-item-title" for="input">
+  <i class="fas fa-paste"></i> Paste your Amazon Ad Code to here:
+</label>
+<div class="ac-ads-adcode-copy-container">
+  <textarea name="input" id="js-ad-code"></textarea>
+</div>
+<button class="a-button" onclick="convertAdCode()">Convert</button>
+
+<label class="ac-ads-adcode-item-title" for="output">
+  <i class="far fa-copy"></i> Copy the HTML <i class="fas fa-code"></i> below to your Tumblr post
+</label>
+<div class="ac-ads-adcode-copy-container">
+  <textarea name="output" id="html-ad-code" readonly></textarea>
+</div>
+
+<label class="ac-ads-adcode-item-title" for="input">
+  Preview Restored:
+</label>
+<div class="ac-ads-adcode-copy-container">
+  <textarea name="test" id="restored-ad-code" readonly></textarea>
+</div>
+<button class="a-button" onclick="restoreAdCode()">Restore</button>
+
+<button class="a-button" id="loadbutton" onclick="loadAmazonAds()">Load the Ads</button>
+
+<div id="wrapper"></div>
+
+<script>
+  const inputarea = document.getElementById('js-ad-code');
+  const outputarea = document.getElementById('html-ad-code');
+  const restorearea = document.getElementById('restored-ad-code');
+  const wrapper = document.getElementById('wrapper');
+  let dataAttrs;
+
+  function convertAdCode() {
+    /* Get the text field */
+
+    const textvalue = inputarea.value.slice(0);
+    /* Texts to format */
+    const prefix = '<script type="text/javascript">';
+    const suffix = '<script src="\/\/z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"><\/script>';
+
+
+    if (textvalue === '') {
+      outputarea.value = '';
+      outputarea.placeholder = 'Input an empty string!'
+    }
+    else if (textvalue.startsWith(prefix)) {
+      const re = />([\S\s]+?)</gm;
+      dataAttrs = re.exec(textvalue)[1].replace(/\r?\n|\r/g, " ").replace(/"/g, "'");
+      outputarea.value = '<div class="amzn-ad-slot" data-amzn-ad-data="';
+      outputarea.value += dataAttrs;
+      outputarea.value += '"></div>'
+
+      document.getElementById("loadbutton").style.display = "block";
+    }
+    else {
+      outputarea.value = '';
+      outputarea.placeholder = 'Invalid Input!'
+    }
+
+    function copyToClipboard(){
+      /* Select the text field */
+      outputarea.select();
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+    }
+  }
+
+  /* Load Amazon Ads Widget */
+  function restoreAdCode() {
+    const temp = document.createElement("div");
+    const data = dataAttrs || " amzn_assoc_placement = 'adunit0'; amzn_assoc_search_bar = 'true'; amzn_assoc_tracking_id = 'cfky05-20'; amzn_assoc_ad_mode = 'manual'; amzn_assoc_ad_type = 'smart'; amzn_assoc_marketplace = 'amazon'; amzn_assoc_region = 'US'; amzn_assoc_title = 'My Amazon Picks'; amzn_assoc_linkid = '54a672a96c325afdfbd2179c5273a2bc'; amzn_assoc_asins = 'B0091W1RY6,B07CYTJWR2,B00OM69HZW,B073DH68BW'; ";
+    const script_textjs = document.createElement("script");
+    script_textjs.type = 'text/javascript';
+    script_textjs.innerHTML = data.replace(/'/g, '"').replace(/;/g, ';\n');
+    temp.appendChild(script_textjs);
+    var script = document.createElement('script');
+    script.src = '//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US';
+    temp.appendChild(script);
+    console.log(data.replace(/'/g, '"'))
+    restorearea.value = temp.innerHTML;
+  }
+
+  function loadAmazonAds() {
+    wrapper.innerHTML = outputarea.value;
+    const adslots = document.getElementsByClassName('amzn-ad-slot');
+    for (let i = 0; i < adslots.length; i++) {
+      const ad = adslots[i];
+      const data = ad.getAttribute('data-amzn-ad-data');
+      const script_textjs = document.createElement("script");
+      script_textjs.type = 'text/javascript';
+      script_textjs.innerHTML = data.replace(/'/g, '"');
+      ad.id = `amzn-adslot-${i}`;
+      const amzn_ad_code = document.createElement('aside');
+      const script = document.createElement('script');
+      script.src = '//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US';
+      amzn_ad_code.id = `amzn-ad-${i}`;
+      amzn_ad_code.appendChild(script_textjs);
+      amzn_ad_code.appendChild(script);
+      wrapper.appendChild(amzn_ad_code);
+    };
+  }
+
+  function MoveDiv() {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(document.getElementById('amznad0_0'));
+    document.getElementById('amznad1_0').appendChild(fragment);
+  }
+</script>
