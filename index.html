@@ -1,9 +1,10 @@
----
-layout: page
-date: 2019-10-23 02:40 +0800
-title: "Amazon Associates Ads Loader for Tumblr"
-css:
-  custom: >-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
     textarea { 
       border-width: 0px;
       box-shadow: none;
@@ -52,10 +53,12 @@ css:
       font-size: 1.1em;
       font-weight: bold;
     }
----
+  </style>
+  <title>Document</title>
+</head>
+<body> 
 
-{%- comment -%}
-Convert the following JavaScript code to a HTML code, for example:
+<!-- Convert the following JavaScript code to a HTML code, for example:
 
 ```html
 <script type="text/javascript">
@@ -78,7 +81,7 @@ Convert the following JavaScript code to a HTML code, for example:
 ```html
 <div class="amznads" data-amznads='amzn_assoc_placement = "adunit0"; amzn_assoc_search_bar = "false"; amzn_assoc_tracking_id = "cfky05-20"; amzn_assoc_ad_mode = "manual"; amzn_assoc_ad_type = "smart"; amzn_assoc_marketplace = "amazon"; amzn_assoc_region = "US"; amzn_assoc_title = "Hans Selye Picks"; amzn_assoc_linkid = "0816b1d20c9c0a26f0f1f662e8a9228f"; amzn_assoc_asins = "B00IHGCNUO,B00IHGCONU,0805073698,0070562121";'></div>
 ```
-{%- endcomment -%}
+-->
 
 A tool to convert the Amazon Associate JavaScript Ads code to a HTML format.
 
@@ -183,13 +186,15 @@ Tumblr disabled the JavaScript directly embedded in a post. For that reason, Ama
       script_textjs.type = 'text/javascript';
       script_textjs.innerHTML = data.replace(/'/g, '"');
       ad.id = `amzn-adslot-${i}`;
-      const amzn_ad_code = document.createElement('aside');
+      const amzn_ad_code = document.createElement('div');
       const script = document.createElement('script');
       script.src = '//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US';
+      script.async = false;
+      script.defer = false;
       amzn_ad_code.id = `amzn-ad-${i}`;
       amzn_ad_code.appendChild(script_textjs);
       amzn_ad_code.appendChild(script);
-      wrapper.appendChild(amzn_ad_code);
+      document.write(amzn_ad_code.innerHTML);
     };
   }
 
@@ -199,3 +204,6 @@ Tumblr disabled the JavaScript directly embedded in a post. For that reason, Ama
     document.getElementById('amznad1_0').appendChild(fragment);
   }
 </script>
+
+</body>
+</html>
